@@ -26,10 +26,19 @@ def add_book():
     books.append(new_book)
     return jsonify(new_book), 201
 
-@app.route(rule='/knihy/<int:book_id>', methods=['GET'])
+@app.route("/knihy/<int:book_id>", methods=['GET'])
 def get_one(book_id):
     for b in books:
         if b["id"] == book_id:
+            return jsonify(b), 200
+    return f"chyba: kniha nenajdena", 404
+
+@app.route("/knihy/<int:book_id>", methods=['PUT'])
+def update_book(book_id):
+    for b in books:
+        if b["id"] == book_id:
+            b["title"] = request.json["title"]
+            b["author"] = request.json["author"]
             return jsonify(b), 200
     return f"chyba: kniha nenajdena", 404
 
@@ -43,4 +52,3 @@ def delete(book_id):
 
 if __name__ == '__main__':
     app.run()
-
